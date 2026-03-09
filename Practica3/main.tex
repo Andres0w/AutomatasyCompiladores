@@ -1,0 +1,246 @@
+\documentclass{article}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[absolute,overlay]{textpos}
+\setlength{\parindent}{0pt}
+\usepackage{geometry}
+\geometry{top=1in, bottom=1in, right=1in, left=1in}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[pages=some]{background}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\pagestyle{empty}
+
+\backgroundsetup{
+  scale=1,
+  opacity=1,
+  angle=0,
+  contents={\includegraphics[width=\paperwidth,height=\paperheight]{imagenes/portada.jpg}}
+}
+
+\usepackage{xcolor}
+\definecolor{rojo}{rgb}{0.8, 0, 0}
+
+\usepackage{titlesec}
+
+
+\titleformat{\section}
+  {\color{rojo}\Large\bfseries}
+  {}
+  {0pt}
+  {}
+
+\titleformat{\subsection}
+  {\color{rojo}\large\bfseries}
+  {}
+  {0pt}
+  {}
+
+\begin{document}
+\BgThispage
+\-
+\begin{textblock*}{15cm}(4cm, 9cm)
+    {\fontsize{30pt}{16pt}\selectfont
+    \textcolor{rojo}{\textbf{REPORTE DE PRÁCTICA NO. 3}}
+    }
+\end{textblock*}
+\begin{textblock*}{12cm}(4cm, 11cm)
+    {\fontsize{20pt}{16pt}\selectfont
+    \textcolor{rojo}{\textbf{Construcción de un Autómata 
+    Finito Determinista}}
+    }
+    
+\end{textblock*}
+\begin{textblock*}{15cm}(4cm, 12.6cm)
+    {\fontsize{13pt}{16pt}\selectfont
+    \textcolor{rojo}{\textbf{ALUMNO:}}
+    }
+\end{textblock*}
+\begin{textblock*}{15cm}(6cm, 13.4cm)
+    {\fontsize{11pt}{16pt}\selectfont
+    \textcolor{rojo}{\textbf{Andrés García Colmenares}}
+    }
+\end{textblock*}
+
+\newpage
+
+\section{1. Introducción}
+    \large Los Automatas Finitos son maquinas teoricas que cambian de un estado a otro, dependiendo de la entrada recibida de esta. Su salida es limitada, donde dependiendo de la entrada que se le ha dado, decide si es \textbf{Aceptada}, o \textbf{No Aceptada}
+
+    \large Para esta practica, se creara un Autómata Finito Determinista a traves de codigo, donde se definiran cada una de sus caracteristicas, como sus elementos, funciones de transición y estados finales/iniciales
+
+\section{2. Marco teórico}
+    \subsection{Análisis de requerimientos}
+    Para la creacion de un Automata Finito Determinista en codigo, se usara Python, y la libreria "automata-lib"
+    
+    \subsection{Python}
+    Python es un lenguaje de programación versatil que es altamente usado, ya sea desarrollo web, analisis de datos o inteligencia artificial, al tener paquetes por medio de pip, que es el gestor de paquetes integrado en python \cite{b5}
+    
+    \subsection{Automata}
+    Automata es una libreria para python 3, la cual implementa estructuras y algoritmos para la manipulacion de automatas, ademas de esto, está optimizado para entradas largas, y tiene soporte para vista grafica de automatas \cite{b4}
+\section{3. Herramientas empleadas}
+    En esta practica, se han utilizado diferentes herramientas para la creacion de automatas finitos
+    \begin{enumerate}
+        \item Python. Lenguaje de programación con una gran biblioteca de librerias para la agilidad en programas y diferentes usos \cite{b5}
+        \item  Automata. Libreria para la implementacion de Automatas Finitos Deterministas \cite{b4}
+    \end{enumerate}        
+    \newpage
+    
+\section{4. Desarrollo}
+    \subsection{Análisis de requisitos}
+    Para la creacion del automata finito, primero identificamos los componentes \\
+    Donde tenemos los siguientes valores \\
+    \textbf{Alfabeto de Entrada:} \(\Sigma=(0,1)\) \\
+    \textbf{Conjunto de Estados:} \(Q=(Q_1,Q_2,Q_3)\) \\
+    \textbf{Estado inicial:} \(Q_1\)\\
+    \textbf{Estado final:}  \(Q_2\)\\
+    
+        \begin{table}[!ht]
+        \begin{center}
+        \caption{Tabla de Funciones de Transición}
+        \label{matriz1}
+        
+        \begin{tabular}{|l|l|l|}            
+            \hline  
+            estados& 0& 1\\
+            \hline
+            q1& q1& q2\\
+            \hline
+            q2& q3& q2\\
+            \hline
+            q3& q2& q2\\\hline          
+        \end{tabular}
+        \end{center}
+        \end{table}
+        \subsection{Traduccion a codigo}
+        Para la construccion del automata finito, usamos el siguiente codigo: \lstset{language=Python,basicstyle=\ttfamily\small,numbers=left,
+numberstyle=\tiny\color{gray},
+keywordstyle=\color{blue}\bfseries,
+commentstyle=\color{green!50!black},
+stringstyle=\color{orange},
+breaklines=true
+}
+\begin{lstlisting}
+# Importacion de libreria
+from automata.fa.dfa import DFA
+
+# Creacion del automata
+automata = DFA(
+    # Alfabeto de entrada
+    input_symbols={'0', '1'},
+    # Conjunto de estados
+    states={'q1', 'q2', 'q3'},
+    # Estados de transicion
+    transitions={
+        'q1': {'0': 'q1', '1': 'q2'},
+        'q2': {'0': 'q3', '1': 'q2'},
+        'q3': {'0': 'q2', '1': 'q2'}
+    },
+    # Estado inicial
+    initial_state='q1',
+    # Estado final
+    final_states={'q2'}
+)
+\end{lstlisting}
+\newpage
+Con este codigo, nuestro automata tiene lo necesario para ejecutarse, pero aun falta algo, la funcion para darle cadenas y regresar una instruccion a partir de esto
+
+\begin{lstlisting}
+# Funcion para entrada de caracteres en el automata finito determinista
+def leerentrada(AFD):
+    try:
+        while True:
+            # Entrada de caracteres, Aceptado si es valido, Rechazado si falla
+            if AFD.accepts_input(input("Entrada: ")):
+                print("Aceptado")
+            else:
+                print("Rechazado")
+    except KeyboardInterrupt:
+        print("")
+
+leerentrada(automata)
+\end{lstlisting}
+
+Ahora, al terminar el codigo, podemos ejecutarlo en nuestra terminal y esperar lo siguiente
+
+\definecolor{psblue}{RGB}{0,102,204}
+\definecolor{psgreen}{RGB}{0,153,0}
+\definecolor{psgray}{RGB}{64,64,64}
+\definecolor{psstring}{RGB}{163,21,21}
+\lstdefinelanguage{PowerShell}{
+  morekeywords={
+    PS>
+  },
+  sensitive=true,
+  morecomment=[l]{#},
+  morestring=[b]",
+  morestring=[b]',
+}
+
+% Global style for PowerShell terminal look
+\lstset{
+  language=PowerShell,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{psblue}\bfseries,
+  commentstyle=\color{psgreen},
+  stringstyle=\color{psstring},
+  backgroundcolor=\color{black!5},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{psgray},
+  stepnumber=1,
+  frame=single,
+  rulecolor=\color{black!50},
+  breaklines=true,
+  tabsize=2,
+  columns=fullflexible
+}
+\begin{lstlisting}
+PS> python ./archivo.py
+Entrada: 101
+Aceptado
+Entrada: 0
+Rechazado
+Entrada: 11
+Aceptado
+Entrada: 1000100001 
+Aceptado
+...
+\end{lstlisting}
+
+\section{5. Cuestionario}
+
+\textbf{¿Qué paradigma de programación utilizaste para la implementación del AFD?, ¿Cuáles elementos 
+del lenguaje de programación utilizaste? } \\
+La programacion imperativa, y en el lenguaje de programacion, se utilizaron los elementos de funciones, paquetes, y variables \\
+\textbf{¿Qué estructuras de datos utilizaste para implementar los componentes del AFD? } \\
+Clases formadas por un paquete externo (automata-lib) \\
+\textbf{¿Qué elementos del lenguaje de programación te permitieron implementar las funciones de transición?, ¿cuáles son las limitaciones del programa que construiste? } \\
+Los paquetes y las clases, asi como las funciones; una de las limitaciones es que el programa necesita cambiar de codigo para cambiar el AFD que se usa, asi como que puede fallar debido a caracteres especiales en la terminal \\
+\textbf{¿Qué condiciones se deben cumplir para que el programa pueda evaluar cualquier AFD?} \\
+Editar el codigo fuente para cambiar los elementos del AFD completo, ya que no permite la edicion en el tiempo de ejecucion 
+    
+\section{6. Conclusiones}
+    La actividad fue interesante, y ayudo a entender los paquetes en el lenguaje de programacion de python, asi como la programacion de estos en el ambito de nuestra carrera, a traves de esto se puede agregar mas informacion a un automata y darle una mayor profundidad si es necesario con nuevos casos o diferentes alfabetos 
+    
+\section{Referencias Bibliográficas}
+    \begin{thebibliography}{100}
+        \bibitem{b1}
+Giró, J., Vázquez, J., Meloni, B., Constable, L.  ({\bf 2015}). Lenguajes formales y teoría de automátas. {\em Editorial Alfaomega. Argentina. }
+        \bibitem{b2}
+Ruiz Catalán, J. ({\bf 2010}). Compiladores: \textit{teoría e implementación.} {\em Editorial Alfaomega. Mexico. }
+        \bibitem{b3}
+Brookshear, J. G. ({\bf 1995}). Teoría de la Computación. \textit{Lenguajes formales, autómatas 
+y complejidad.} {\em Editorial Addison-Wesley Iberoamericana. Primera edición. U.S.A.  }
+\bibitem{b4}
+Caleb Evans ({\bf 2016-2025}). \textit{Automata} {\em https://caleb531.github.io/automata/}
+\bibitem{b5}
+Python. ({\bf 2026}). \textit{Python} {\em https://www.python.org/}
+    \end{thebibliography}
+
+\end{document}
