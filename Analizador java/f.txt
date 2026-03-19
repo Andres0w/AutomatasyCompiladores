@@ -1,0 +1,60 @@
+Token - PAR tipo o valor, el cual representa una unidad lexica con significado, es un 
+output del analizador léxico hacia el parser
+
+(KEYWORD, "class")
+
+Lexema - Secuencia de caracteres del codigo fuente el cual coincide con el patron de un token.
+Es la cadena cruda leida del archivo
+
+"class", "MiClase", "123"
+
+Patron - Regla mediante expresiones regulares que describen el conjunto de cadenas validas 
+para un token 
+
+[a-zA-Z_][a-ZA-Z0-9_]*
+
+Categorias de tokens en java
+
+Categoria - Ejemplo
+KEYWORD - class, if, while, return, int, void, new, public, static
+IDENTIFIER - miVariable _count MiClase $precio
+INTEGER_LIT - 42, 0, 1_000_000L
+FLOAT_LIT - 3.14, 1.5f, 2.5e-3d
+STRING_LIT - "Hola\nMundo" ""
+CHAR_LIT 'a' '\n' '\u0041'
+OPERATOR - + - * == != && ++ <=
+SEPARATOR - ( ) { } [ ] ; , 
+LINE_COMMENT - // esto es un comentario
+BLOCK_COMMENT - /* bloque */
+
+TOKEN - REGEX
+KEYWORD - \b(class|if|else|while)
+IDENTIFIER - [a-zA-Z_][a-ZA-Z0-9_]*
+INTEGER_LIT - 0|[1-9][0-9_]*[1L]?
+FLOAT_LIT - [0-9][0-9_]*\.[0-9][0-9_]*([eE][+-]?[0-9]+\?[fFdD])
+STRING_LIT - "([^"\\]|\\.)*"
+CHAR_LIT - "([^'\\]|\\.)"
+OPERATOR - ==|!=|<=|>=|&&||||<<|>>|++|--|[+\-*/%<>=!&|^~]
+SEPARATOR - [(){}\[\];,.]
+LINE_COMMENT - //[^\n]*
+BLOCK_COMMENT - /\*[\s\S]*?\*/
+WHITESPACE [ \t\r\n]+
+
+REGLAS DE PRIORIDAD
+1. Comentarios
+2. Literales de cadena y char
+3. Literales numericos
+4. KEYWORD antes que IDENTIFIER
+5. Operadores compuestos antes que simples, == no es = y =
+6. Separadores
+7. Whitespace - Descartar al final
+
+Principio de maximal munch: el analisador siempre consume el lexema mas largo posible
+Asi integer es un IDENTIFIER, y no puede ser KEYWORD("int") + IDENTIFIER("eger").
+
+¿Qué pasa si eliminas los \b del patrón KEYWORD?
+Separa los identificadores, como en integer, que se convierte en int, y eger
+¿Por qué el patrón KEYWORD debe evaluarse antes que IDENTIFIER?
+Para que las palabras clave no se reconozcan como identificadores
+¿Podrías construir una sola ER que reconozca ambos tokens a la vez?
+Tal vez, con 
