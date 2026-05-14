@@ -1,0 +1,7 @@
+SELECT * FROM usuarios;
+INSERT INTO usuarios (id, nombre) VALUES (1, 'Juan');
+UPDATE usuarios SET nombre = 'Pedro' WHERE id = 1;
+DELETE FROM usuarios WHERE id = 2;
+SELECT * FROM empleados;
+SELECT id, nombre, apellido FROM empleados;
+SELECT DISTINCT departamento FROM empleados;

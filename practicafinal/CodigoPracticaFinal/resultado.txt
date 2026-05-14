@@ -1,0 +1,8 @@
+[Linea 1] Sentencia SELECT valida
+[Linea 2] Sentencia INSERT valida
+[Linea 3] Sentencia UPDATE valida
+[Linea 4] Sentencia DELETE valida
+[Linea 5] Sentencia SELECT valida
+[Linea 6] Sentencia SELECT valida
+[Linea 7] Error cerca de 'departamento': syntax error
+[Linea 7] Sentencia invalida
